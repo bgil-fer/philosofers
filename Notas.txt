@@ -1,0 +1,55 @@
+
+Estructura conceptual del programa de los filósofos comensales (sin variables globales):
+
+1. Lectura y validación de parámetros:
+   - number_of_philosophers
+   - time_to_die
+   - time_to_eat
+   - time_to_sleep
+   - number_of_times_each_philosopher_must_eat (opcional)
+   → Todos estos parámetros se encapsulan en una estructura de configuración (por ejemplo, t_config).
+
+2. Inicialización de estructuras:
+   - Se crea una estructura principal (t_simulation) que contiene:
+     • La configuración del programa (datos de argv)
+     • Array de filósofos (t_philosopher)
+     • Array de mutexes para los tenedores
+     • Mutex para impresión en consola
+     • Mutex para control de estado (por ejemplo, si alguien ha muerto)
+     • Tiempo de inicio de la simulación
+   → Esta estructura se pasa por puntero a todas las funciones y hilos que la necesiten.
+
+3. Creación de hilos:
+   - Se lanza un hilo por cada filósofo.
+   - Cada hilo recibe un puntero a su propia estructura t_philosopher, que incluye un puntero a t_simulation.
+
+4. Ciclo de vida del filósofo:
+   - Pensar
+   - Tomar tenedores (bloqueo de mutexes)
+   - Comer (actualiza tiempo de última comida, incrementa contador, espera time_to_eat)
+   - Soltar tenedores (desbloqueo de mutexes)
+   - Dormir (espera time_to_sleep)
+   - Volver a pensar
+
+5. Monitor de muerte:
+   - Hilo separado que recorre periódicamente todos los filósofos.
+   - Verifica si alguno ha superado time_to_die desde su última comida.
+   - Si detecta una muerte:
+     • Imprime el mensaje correspondiente
+     • Actualiza el estado de la simulación (por ejemplo, bandera de "terminado") usando mutex
+
+6. Finalización del programa:
+   - Si se especifica number_of_times_each_philosopher_must_eat, el programa termina cuando todos han comido suficiente.
+   - Se espera a que todos los hilos terminen.
+   - Se destruyen los mutexes y se libera la memoria.
+
+Resumen de componentes (sin variables globales):
+
+| Componente                      | Rol                                                    |
+|-------------------------------|---------------------------------------------------------|
+| t_config                       | Contiene los parámetros del programa                   |
+| t_simulation                   | Estructura principal con todos los recursos compartidos|
+| t_philosopher                  | Estructura individual por filósofo                     |
+| Mutexes                        | Tenedores, impresión, control de estado                |
+| Hilos                          | Uno por filósofo + uno monitor                         |
+| Comunicación entre estructuras| Se hace por punteros, nunca por variables globales     |
