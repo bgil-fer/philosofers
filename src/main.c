@@ -6,13 +6,13 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 12:17:14 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/10 13:29:18 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/09/11 14:01:23 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	check_args(int argc, char **argv, t_config **config)
+void	check_args(int argc, char **argv)
 {
 	int		i;
 	long	num;
@@ -26,34 +26,69 @@ void	check_args(int argc, char **argv, t_config **config)
 		if (i == 1 && (num < 1 || num > MAX_INT))
 			print_error_message("Invalid number of philosofers", 1);
 		else if (i == 5 && (num < 0 || num > MAX_INT))
-			print_error_message("Invalid number_of_times_each_philo_must_eat", 1);
+			print_error_message("Invalid number_of_times_philo_must_eat", 1);
 		else if (i != 1 && i != 5 && (num < 1 || num > MAX_INT))
 			print_error_message("Error on arguments of type TIME", 1);
-		if (i == 1)
-			(*config)->number_of_philosophers = num;
-		else if (i == 5)
-			(*config)->number_of_times_each_philo_must_eat = num;
-		else if (i == 2)
-			(*config)->time_to_die = num;
-		else if (i == 3)
-			(*config)->time_to_eat = num;
-		else
-			(*config)->time_to_sleep = num;
+	}
+}
+
+void	create_threads(t_simulation *sim)
+{
+	int	i;
+
+	i = 1;
+	while (i < sim->config->number_of_philosophers)
+	{
+		pthread_create();
 		i++;
 	}
 }
 
-void	init_structures(t_config **config, t_philo **philos)
+/*
+Cómo usar gettimeofday
+void init_simulation(t_simulation *sim, t_philo **philos)
 {
-	
+    struct timeval  tv;
+
+    gettimeofday(&tv, NULL);
+    sim->start_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+
+    // ... resto de la inicialización
+}
+*/
+
+void	init_simulation(t_simulation *sim, t_philo **philos)
+{
+	struct timeval	tv; //es legal?
+
+	*philos = malloc(sizeof(t_philo) * sim->config.number_of_philo);
+	if (!(*philos))
+		print_error_message("Error while reserving memory", 1);
+	sim->philos = *philos;
+	sim->forks = malloc(sizeof(pthread_mutex_t) * sim->config.number_of_philo);
+	if (!sim->forks)
+		print_error_message("Error while reserving memory", 1);
+	// print_mutex;
+	// pthread_mutex_t	state_control_mutex;
+	// bool			someone_died;
+	sim->start_time = get_timestamp(); //probarr
+}
+
+void	init_structures(t_simulation *sim, int argc, char **argv, t_philo **ph)
+{
+	init_config(&(sim->config), argc, argv);
+	init_simulation(sim, ph);
+	init_philos();
 }
 
 int	main(int argc, char **argv)
 {
-	t_config	*config;
-	t_philo		*philos;
+	t_simulation	sim;
+	t_philo			*philos;
 
-	check_args(argc, argv, &config);
-	init_structures(&config, &philos);
-	return(0);
+	check_args(argc, argv);
+	init_structures(&sim, argc, argv, &philos);
+	//create_threads();
+	//liberar memoria de filosofos. 
+	return (0);
 }

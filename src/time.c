@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/04 12:39:03 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/11 13:09:13 by bgil-fer         ###   ########.fr       */
+/*   Created: 2025/09/11 13:59:20 by bgil-fer          #+#    #+#             */
+/*   Updated: 2025/09/11 14:00:02 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_error_message(char *message, int signal, t_simulation *sim)
+long	get_timestamp(void)
 {
-	if (message)
-		printf("Error: %s\n", message);
-	if (sim->philos)
-		free(sim->philos);
-	if (sim->forks)
-		free(sim->forks);
-	exit(signal); // signaaal???? --> nº que me devuelve como error.
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
