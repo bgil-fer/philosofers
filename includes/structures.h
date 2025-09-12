@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 11:24:37 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/11 13:53:34 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/09/12 13:25:21 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_philo
 
 typedef struct s_simulation
 {
-	t_config		config;
+	t_config		*config;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
