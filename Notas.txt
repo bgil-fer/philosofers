@@ -76,11 +76,11 @@ INICIAIZAR ESTRUCTURA SIMULATION
 [x] Reservar memoria para el array de tenedores (pthread_mutex_t[]).
 
 🔹 4. Inicializar mutexes
-[ ] Inicializar cada mutex del array de tenedores.
+[x] Inicializar cada mutex del array de tenedores.
 
-[ ] Inicializar el mutex de impresión (print_mutex).
+[x] Inicializar el mutex de impresión (print_mutex).
 
-[ ] Inicializar el mutex de estado (state_mutex).
+[x] Inicializar el mutex de estado (state_mutex).
 
 🔹 5. Inicializar filósofos
 [ ] Asignar ID único a cada filósofo.

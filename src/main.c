@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 12:17:14 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/12 13:46:41 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/09/23 13:58:18 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,39 +51,22 @@ void	create_threads(t_simulation *sim)
 }
 */
 
-// Pasar las dos funciones de inicialización de abajo al documento de inicializar cuando 
-// esté termianda init_sim. 
-
-static bool	init_mutexes(t_simulation *sim)
+bool	init_philos(t_simulation *sim, t_philo **ph)
 {
 	int	i;
 
 	i = 0;
 	while (i < sim->config->number_of_philo)
 	{
-		if (pthread_mutex_init(&sim->forks[i], NULL))
-			return (ft_exit("Initializing mutexes", sim), false);
+		(*ph)[i]->id = i + 1;
+		ph[i]->times_have_eaten = 0;
+		ph[i]->last_meal_time = sim->start_time;
+		if (pthread_create(ph[i]->thread, NULL, routine(), sim)) // crear función para la rutina
+			return (ft_exit("Creating a thread", sim), false);
+		//faltan los forks
 		i++;
 	}
-	if (pthread_mutex_init(&sim->print_mutex, NULL))
-		return (ft_exit("Initializing mutexes", sim), false);
-	if (pthread_mutex_init(&sim->state_control_mutex, NULL))
-		return (ft_exit("Initializing mutexes", sim), false);
-	return (true);
-}
-
-bool	init_simulation(t_simulation *sim, t_philo **philos)
-{
-	*philos = malloc(sizeof(t_philo) * sim->config->number_of_philo);
-	if (!(*philos))
-		return (ft_exit("Memory allocation", &sim), false);
-	sim->philos = *philos;
-	sim->forks = malloc(sizeof(pthread_mutex_t) * sim->config->number_of_philo);
-	if (!sim->forks)
-		return (ft_exit("Memory allocation", &sim), false);
-	init_mutexes(&sim);
-	// bool			someone_died;
-	sim->start_time = get_timestamp(); //probarr
+	sim->philos = &ph; //falta geestionar bien esto :)
 	return (true);
 }
 
@@ -93,7 +76,7 @@ bool	init_structures(t_simulation *sim, int argc, char **argv, t_philo **ph)
 		return (false);
 	if (!init_simulation(sim, ph))
 		return (false);
-	if (!init_philos()) //faltaa!!
+	if (!init_philos(sim, ph))
 		return (false);
 	return (true);
 }

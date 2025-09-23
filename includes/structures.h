@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 11:24:37 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/12 13:25:21 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/09/23 13:41:09 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ typedef struct s_philo
 	size_t			times_have_eaten;
 	long			last_meal_time;
 	pthread_t		thread;
-	pthread_mutex_t	*left_fork;//no sé si esto me convence
+	pthread_mutex_t	*left_fork;
+	bool			left_fork_init;
 	pthread_mutex_t	*right_fork;
+	bool			right_fork_init;
 
 }	t_philo;
 
@@ -41,8 +43,11 @@ typedef struct s_simulation
 	t_config		*config;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
+	bool			forks_init;
 	pthread_mutex_t	print_mutex;
+	bool			print_mutex_init;
 	pthread_mutex_t	state_control_mutex;
+	bool			state_control_mutex_init;
 	bool			someone_died;
 	long			start_time;
 }					t_simulation;
