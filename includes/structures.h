@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 11:24:37 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/23 13:41:09 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/09/26 13:54:26 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 
 typedef struct s_config
 {
-	int		number_of_philo;
+	int		numb_philo;
 	int		time_to_die;
 	int		time_to_eat;
 	int		time_to_sleep;
 	int		number_of_times_each_philo_must_eat;
-	bool	must_eat_enabled; //????
+	// bool	must_eat_enabled; //????
 }			t_config;
 
 typedef struct s_philo
@@ -32,23 +32,25 @@ typedef struct s_philo
 	long			last_meal_time;
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
-	bool			left_fork_init;
 	pthread_mutex_t	*right_fork;
-	bool			right_fork_init;
-
-}	t_philo;
+}					t_philo;
 
 typedef struct s_simulation
 {
 	t_config		*config;
-	t_philo			*philos;
+	t_philo			*ph;
 	pthread_mutex_t	*forks;
 	bool			forks_init;
 	pthread_mutex_t	print_mutex;
 	bool			print_mutex_init;
 	pthread_mutex_t	state_control_mutex;
 	bool			state_control_mutex_init;
-	bool			someone_died;
+	pthread_mutex_t	someone_died;
+	bool			someone_died_bool;
+	bool			someone_died_init;
+	pthread_mutex_t	all_eaten;
+	bool			all_eaten_init;
+	size_t			all_eaten_count;
 	long			start_time;
 }					t_simulation;
 
