@@ -6,11 +6,18 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:30:17 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/10 11:40:04 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/06 12:44:15 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static int	ft_isdigit(int c)
+{
+	if (c < 48 || c > 57)
+		return (0);
+	return (1);
+}
 
 static int	ft_isspace(int c)
 {

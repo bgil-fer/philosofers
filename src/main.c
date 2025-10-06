@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 12:17:14 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/26 14:01:40 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:00:24 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,35 @@ static bool	check_args(int argc, char **argv)
 	}
 	return (true);
 }
+
+// bool	init_guard(t_simulation *sim)
+// {
+// 	if (check_deaths(sim))
+// 		return (false);
+// }
+
+
 //Cpmprobar si alguien se ha muerto, y si todos han comido el máximo de veces. 
 
-void	*routine(void *sim)
+void	*routine(void *philo)
 {
-	t_simulation *s;
+	t_philo *ph;
 
-	s = (t_simulation *) sim;
-	//check si solo hay 1 philo- 
-	while (!s->someone_died_bool)
+	ph = (t_philo *) philo;
+	if (ph->sim->config->numb_philo == 1)
 	{
-		eating(sim);
-		spleeping(sim);
-		thinking(sim);
+		pthread_mutex_lock(&ph->sim->print_mutex);
+		print(ph, 2);
+		pthread_mutex_unlock(&ph->sim->print_mutex);
+		ph->sim->someone_died_bool = true;
 	}
+	while (!ph->sim->someone_died_bool)
+	{
+		eating(ph);
+		sleeping(ph);
+		thinking(ph);
+	}
+	return (NULL);
 }
 
 int	main(int argc, char **argv)

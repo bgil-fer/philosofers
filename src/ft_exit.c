@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 12:39:03 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/09/26 12:48:18 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/06 12:26:11 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void	destroy_mutexes(t_simulation *sim)
 		pthread_mutex_destroy(&sim->state_control_mutex);
 	if (sim->someone_died_init == true)
 		pthread_mutex_destroy(&sim->someone_died);
+	if (sim->all_eaten_init == true)
+		pthread_mutex_destroy(&sim->all_eaten);
 }
 
 void	ft_exit(char *message, t_simulation *sim)
@@ -46,7 +48,6 @@ void	ft_exit(char *message, t_simulation *sim)
 		destroy_mutexes(sim);
 		if (sim->forks)
 			free(sim->forks);
-		if (sim->ph) //gestionar
-		
+		// if (sim->ph) //gestionar
 	} 
 }
