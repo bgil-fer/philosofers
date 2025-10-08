@@ -6,13 +6,13 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 12:39:03 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/06 12:26:11 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/08 18:43:26 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	destroy_mutexes(t_simulation *sim)
+void	destroy_mutexes(t_simulation *sim)
 {
 	int	i;
 
@@ -27,8 +27,6 @@ static void	destroy_mutexes(t_simulation *sim)
 	}
 	if (sim->print_mutex_init == true)
 		pthread_mutex_destroy(&sim->print_mutex);
-	if (sim->state_control_mutex_init == true)
-		pthread_mutex_destroy(&sim->state_control_mutex);
 	if (sim->someone_died_init == true)
 		pthread_mutex_destroy(&sim->someone_died);
 	if (sim->all_eaten_init == true)
@@ -41,13 +39,12 @@ void	ft_exit(char *message, t_simulation *sim)
 		printf("Error: %s\n", message);
 	if (sim)
 	{
+		destroy_mutexes(sim);
 		if (sim->config)
 			free(sim->config);
 		if (sim->ph)
 			free(sim->ph);
-		destroy_mutexes(sim);
 		if (sim->forks)
 			free(sim->forks);
-		// if (sim->ph) //gestionar
 	} 
 }

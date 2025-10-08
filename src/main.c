@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 12:17:14 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/06 15:00:24 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/08 18:45:33 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,11 @@ static bool	check_args(int argc, char **argv)
 		else if (i == 5 && (num < 1 || num > INT_MAX))
 			return (ft_exit("Invalid number_of_times_must_eat", NULL), false);
 		else if (i != 1 && i != 5 && (num < 1 || num > INT_MAX))
-			return (ft_exit("Error on arguments of type TIME", NULL), false);
+			return (ft_exit("on arguments of type TIME", NULL), false);
 		i++;
 	}
 	return (true);
 }
-
-// bool	init_guard(t_simulation *sim)
-// {
-// 	if (check_deaths(sim))
-// 		return (false);
-// }
-
-
-//Cpmprobar si alguien se ha muerto, y si todos han comido el máximo de veces. 
 
 void	*routine(void *philo)
 {
@@ -53,10 +44,9 @@ void	*routine(void *philo)
 	ph = (t_philo *) philo;
 	if (ph->sim->config->numb_philo == 1)
 	{
-		pthread_mutex_lock(&ph->sim->print_mutex);
 		print(ph, 2);
-		pthread_mutex_unlock(&ph->sim->print_mutex);
 		ph->sim->someone_died_bool = true;
+		return (NULL);
 	}
 	while (!ph->sim->someone_died_bool)
 	{
@@ -67,6 +57,19 @@ void	*routine(void *philo)
 	return (NULL);
 }
 
+static void	join_threads(t_simulation *sim)
+{
+	int	i;
+
+	i = 0;
+	while (i < sim->config->numb_philo)
+	{
+		pthread_join(sim->ph[i].thread, NULL);
+		i++;
+	}
+	pthread_join(sim->monitor, NULL);
+}
+
 int	main(int argc, char **argv)
 {
 	t_simulation	sim;
@@ -75,6 +78,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!init_structures(&sim, argc, argv))
 		return (ft_exit(NULL, &sim), 1);
-	//liberar memoria de filosofos, forks, config. 
+	join_threads(&sim);
+	ft_exit(NULL, &sim);
 	return (0);
 }

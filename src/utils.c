@@ -6,13 +6,13 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 13:59:20 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/06 14:51:44 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/08 17:47:25 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time(void)
+long long	get_time(void)
 {
 	struct timeval	tv;
 
@@ -22,26 +22,27 @@ long	get_time(void)
 
 void	print(t_philo *ph, int m)
 {
-	long	time;
+	long long	time;
 
-	// pthread_mutex_lock(&ph->sim->print_mutex);
+	pthread_mutex_lock(&ph->sim->print_mutex);
 	time = get_time() - ph->start_time;
 	if (m == 1)
-		printf("[%zu] %zu has died\n", time, ph->id);
+		printf("[%lld] %zu has died\n", time, ph->id);
 	else if (m == 2)
-		printf("[%zu] %zu has taken a fork\n", time, ph->id);
+		printf("[%lld] %zu has taken a fork\n", time, ph->id);
 	else if (m == 3)
-		printf("[%zu] %zu is eating\n", time, ph->id);
+		printf("[%lld] %zu is eating\n", time, ph->id);
 	else if (m == 4)
-		printf("[%zu] %zu is sleeping\n", time, ph->id);
+		printf("[%lld] %zu is sleeping\n", time, ph->id);
 	else if (m == 5)
-		printf("[%zu] %zu is thinking\n", time, ph->id);
-	// pthread_mutex_unlock(&ph->sim->print_mutex);
+		printf("[%lld] %zu is thinking\n", time, ph->id);
+	pthread_mutex_unlock(&ph->sim->print_mutex);
 }
 
 bool	check_deaths(t_simulation *sim)
 {
 	bool	death;
+
 	pthread_mutex_lock(&sim->someone_died);
 	if (sim->someone_died_bool == false)
 		death = false;
@@ -53,9 +54,9 @@ bool	check_deaths(t_simulation *sim)
 
 void	wait(t_philo *ph, int time)
 {
-	long	now;
-	
+	long now;
+
 	now = get_time();
-	while(!check_deaths(ph->sim) && (now - ph->start_time) < time)
+	while(!check_deaths(ph->sim) && (get_time() - now) < time)
 		usleep(50);
 }
