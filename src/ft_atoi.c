@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:30:17 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/15 14:49:47 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 15:03:59 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_atoi(const char *n)
 	}
 	else if (n[i] == '+')
 		i++;
-	while (n[i] && (n[i] >=48 && n[i] <= 57) && !check_if_characters(&n[i]))
+	while (n[i] && (n[i] >= 48 && n[i] <= 57) && !check_if_characters(&n[i]))
 	{
 		res = res * 10 + (n[i] - 48);
 		i++;
