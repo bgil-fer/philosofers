@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 12:17:14 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/15 12:13:17 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:30:02 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static bool	check_args(int argc, char **argv)
 	i = 1;
 	if (argc < 5 || argc > 6)
 	{
-		ft_exit("Invalid number of arguments", NULL); //si este null funciona, mejor null para que no pete en el free porque aun no he inicializado esa estructura
+		ft_exit("Invalid number of arguments", NULL);
 		return (false);
 	}
 	while (i < argc)
@@ -39,10 +39,10 @@ static bool	check_args(int argc, char **argv)
 
 void	*routine(void *philo)
 {
-	t_philo *ph;
+	t_philo	*ph;
 
 	ph = (t_philo *) philo;
-	if (ph->sim->config->numb_philo == 1)
+	if (ph->sim->config->n_philo == 1)
 	{
 		print(ph, 2);
 		ph->sim->someone_died_bool = true;
@@ -63,7 +63,7 @@ static void	join_threads(t_simulation *sim)
 	int	i;
 
 	i = 0;
-	while (i < sim->config->numb_philo)
+	while (i < sim->config->n_philo)
 	{
 		pthread_join(sim->ph[i].thread, NULL);
 		i++;

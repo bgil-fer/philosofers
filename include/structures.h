@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 11:24:37 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/15 12:01:23 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:30:04 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 typedef struct s_config
 {
-	int		numb_philo;
+	int		n_philo;
 	int		time_to_die;
 	int		time_to_eat;
 	int		time_to_sleep;
-	int		number_of_times_to_eat;
+	int		n_eat;
 }			t_config;
 
 typedef struct s_philo
@@ -46,9 +46,9 @@ typedef struct s_simulation
 	pthread_mutex_t	someone_died;
 	bool			someone_died_bool;
 	bool			someone_died_init;
-	pthread_mutex_t	all_eaten;
+	pthread_mutex_t	all_eaten_mutex;
 	bool			all_eaten_init;
-	int				all_eaten_count;
+	int				all_eaten;
 }					t_simulation;
 
 #endif 

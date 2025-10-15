@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 13:59:20 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/08 17:47:25 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:19:29 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ bool	check_deaths(t_simulation *sim)
 
 void	wait(t_philo *ph, int time)
 {
-	long now;
+	long	now;
 
 	now = get_time();
-	while(!check_deaths(ph->sim) && (get_time() - now) < time)
+	while (!check_deaths(ph->sim) && (get_time() - now) < time)
 		usleep(50);
 }

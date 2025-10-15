@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:05:05 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/08 18:33:11 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:32:53 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ bool	init_config(t_simulation *sim, int argc, char **argv)
 	int			i;
 	int			num;
 
-	i = 1;
+	i = 0;
 	sim->config = malloc(sizeof(t_config));
 	if (!sim->config)
-    	return (false);
-	(sim->config)->number_of_times_to_eat = -1;
-	while (i < argc)
+		return (false);
+	(sim->config)->n_eat = -1;
+	while (++i < argc)
 	{
-		if (!(num = ft_atoi(argv[i])))
+		num = ft_atoi(argv[i]);
+		if (!num)
 			return (false);
 		if (i == 1)
-			(sim->config)->numb_philo = num;
+			(sim->config)->n_philo = num;
 		else if (i == 2)
 			(sim->config)->time_to_die = num;
 		else if (i == 3)
@@ -35,8 +36,7 @@ bool	init_config(t_simulation *sim, int argc, char **argv)
 		else if (i == 4)
 			(sim->config)->time_to_sleep = num;
 		else if (i == 5)
-			(sim->config)->number_of_times_to_eat = num;
-		i++;
+			(sim->config)->n_eat = num;
 	}
 	return (true);
 }
@@ -48,7 +48,7 @@ static bool	init_mutexes(t_simulation *sim)
 	i = 0;
 	sim->print_mutex_init = false;
 	sim->forks_init = false;
-	while (i < sim->config->numb_philo)
+	while (i < sim->config->n_philo)
 	{
 		if (pthread_mutex_init(&sim->forks[i], NULL))
 			return (ft_exit("Initializing mutexes", sim), false);
@@ -64,10 +64,10 @@ static bool	init_mutexes(t_simulation *sim)
 
 bool	init_simulation(t_simulation *sim)
 {
-	sim->ph = malloc(sizeof(t_philo) * sim->config->numb_philo);
+	sim->ph = malloc(sizeof(t_philo) * sim->config->n_philo);
 	if (!sim->ph)
 		return (ft_exit("Memory allocation", sim), false);
-	sim->forks = malloc(sizeof(pthread_mutex_t) * sim->config->numb_philo);
+	sim->forks = malloc(sizeof(pthread_mutex_t) * sim->config->n_philo);
 	if (!sim->forks)
 		return (ft_exit("Memory allocation", sim), false);
 	init_mutexes(sim);
@@ -79,12 +79,12 @@ bool	init_simulation(t_simulation *sim)
 		sim->someone_died_init = true;
 		sim->someone_died_bool = false;
 	}
-	if (pthread_mutex_init(&sim->all_eaten, NULL))
+	if (pthread_mutex_init(&sim->all_eaten_mutex, NULL))
 		return (ft_exit("Initializing mutexes", sim), false);
 	else
 	{
 		sim->all_eaten_init = true;
-		sim->all_eaten_count = 0;
+		sim->all_eaten = 0;
 	}
 	return (true);
 }
@@ -94,16 +94,16 @@ bool	init_philos(t_simulation *sim)
 	int	i;
 
 	i = 0;
-	while (i < sim->config->numb_philo)
+	while (i < sim->config->n_philo)
 	{
 		sim->ph[i].id = i + 1;
 		sim->ph[i].times_have_eaten = 0;
 		sim->ph[i].start_time = get_time();
 		sim->ph[i].last_meal_time = get_time();
 		sim->ph[i].left_fork = &sim->forks[i];
-		sim->ph[i].right_fork = &sim->forks[(i + 1) % sim->config->numb_philo];
+		sim->ph[i].right_fork = &sim->forks[(i + 1) % sim->config->n_philo];
 		sim->ph[i].sim = sim;
-		if(pthread_create(&sim->ph[i].thread, NULL, routine, &sim->ph[i]))
+		if (pthread_create(&sim->ph[i].thread, NULL, routine, &sim->ph[i]))
 			return (ft_exit("Creating a thread", sim), false);
 		i++;
 	}

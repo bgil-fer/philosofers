@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 17:28:33 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/08 18:49:23 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:30:02 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 static bool	check_philos_death(t_simulation *sim)
 {
 	int	i;
-	
+
 	i = 0;
-	while (i < sim->config->numb_philo)
+	while (i < sim->config->n_philo)
 	{
 		if ((get_time() - sim->ph[i].last_meal_time) > sim->config->time_to_die)
 		{
 			pthread_mutex_lock(&sim->someone_died);
 			sim->someone_died_bool = true;
 			pthread_mutex_unlock(&sim->someone_died);
-			print(&sim->ph[i], 1); 
+			print(&sim->ph[i], 1);
 			return (true);
 		}
 		i++;
@@ -41,16 +41,16 @@ void	*init_guard(void *arg)
 	{
 		if (check_philos_death(sim))
 			return (NULL);
-		pthread_mutex_lock(&sim->all_eaten);
-		if (sim->config->number_of_times_to_eat != -1 && sim->all_eaten_count >= sim->config->numb_philo)
+		pthread_mutex_lock(&sim->all_eaten_mutex);
+		if (sim->config->n_eat != -1 && sim->all_eaten >= sim->config->n_philo)
 		{
 			pthread_mutex_lock(&sim->someone_died);
 			sim->someone_died_bool = true;
 			pthread_mutex_unlock(&sim->someone_died);
-			pthread_mutex_unlock(&sim->all_eaten);
+			pthread_mutex_unlock(&sim->all_eaten_mutex);
 			return (NULL);
 		}
-		pthread_mutex_unlock(&sim->all_eaten);
+		pthread_mutex_unlock(&sim->all_eaten_mutex);
 	}
 	return (NULL);
 }
