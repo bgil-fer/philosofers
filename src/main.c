@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 12:17:14 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/08 18:45:33 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:13:17 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	*routine(void *philo)
 		eating(ph);
 		sleeping(ph);
 		thinking(ph);
+		usleep(2000);
 	}
 	return (NULL);
 }

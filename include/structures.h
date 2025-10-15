@@ -6,7 +6,7 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 11:24:37 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/08 17:41:04 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:01:23 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_simulation
 	pthread_mutex_t	all_eaten;
 	bool			all_eaten_init;
 	int				all_eaten_count;
-	//long			start_time;
 }					t_simulation;
 
 #endif 
