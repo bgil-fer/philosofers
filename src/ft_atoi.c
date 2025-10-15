@@ -6,17 +6,26 @@
 /*   By: bgil-fer <bgil-fer@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:30:17 by bgil-fer          #+#    #+#             */
-/*   Updated: 2025/10/06 12:44:15 by bgil-fer         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:49:47 by bgil-fer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	ft_isdigit(int c)
+static bool	check_if_characters(const char *nptr)
 {
-	if (c < 48 || c > 57)
-		return (0);
-	return (1);
+	int		i;
+	bool	charac;
+
+	i = 0;
+	charac = false;
+	while (nptr[i])
+	{
+		if (nptr[i] < 48 || nptr[i] > 57)
+			charac = true;
+		i++;
+	}
+	return (charac);
 }
 
 static int	ft_isspace(int c)
@@ -26,7 +35,7 @@ static int	ft_isspace(int c)
 	return (0);
 }
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi(const char *n)
 {
 	size_t	i;
 	int		neg;
@@ -35,18 +44,18 @@ int	ft_atoi(const char *nptr)
 	neg = 0;
 	i = 0;
 	res = 0;
-	while (nptr[i] && ft_isspace(nptr[i]))
+	while (n[i] && ft_isspace(n[i]))
 		i++;
-	if (nptr[i] == '-')
+	if (n[i] == '-')
 	{
 		neg = 1;
 		i++;
 	}
-	else if (nptr[i] == '+')
+	else if (n[i] == '+')
 		i++;
-	while (nptr[i] && ft_isdigit(nptr[i]))
+	while (n[i] && (n[i] >=48 && n[i] <= 57) && !check_if_characters(&n[i]))
 	{
-		res = res * 10 + (nptr[i] - 48);
+		res = res * 10 + (n[i] - 48);
 		i++;
 	}
 	if (neg == 1)
